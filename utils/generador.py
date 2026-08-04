@@ -2,9 +2,9 @@
 import secrets
 
 
-def generar_contrasena():
-    """Genera una contraseña aleatoria de exactamente 12 caracteres
+def generar_contrasena(longitud=12):
+    """Genera una contraseña aleatoria de longitud especificada
     compuesta únicamente por letras (mayúsculas y minúsculas) y números.
     """
     chars = string.ascii_letters + string.digits
-    return ''.join(secrets.choice(chars) for _ in range(12))
+    return ''.join(secrets.choice(chars) for _ in range(longitud))
