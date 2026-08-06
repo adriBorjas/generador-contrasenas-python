@@ -32,20 +32,35 @@ minusculas_var = tk.BooleanVar(value=True)
 numeros_var = tk.BooleanVar(value=True)
 simbolos_var = tk.BooleanVar(value=True)
 
+def comprobar_opciones():
+    """Habilita el botón si al menos una categoría está seleccionada; lo deshabilita en caso contrario."""
+    if any([
+        mayusculas_var.get(),
+        minusculas_var.get(),
+        numeros_var.get(),
+        simbolos_var.get()
+    ]):
+        btn.config(state='normal')
+    else:
+        btn.config(state='disabled')
+
 checkbox_frame = tk.Frame(root)
 checkbox_frame.pack(padx=20, pady=(0, 15), anchor='w')
 
-check_mayusculas = tk.Checkbutton(checkbox_frame, text="Mayúsculas", variable=mayusculas_var)
+check_mayusculas = tk.Checkbutton(checkbox_frame, text="Mayúsculas", variable=mayusculas_var, command=comprobar_opciones)
 check_mayusculas.grid(row=0, column=0, sticky='w')
-check_minusculas = tk.Checkbutton(checkbox_frame, text="Minúsculas", variable=minusculas_var)
+check_minusculas = tk.Checkbutton(checkbox_frame, text="Minúsculas", variable=minusculas_var, command=comprobar_opciones)
 check_minusculas.grid(row=0, column=1, sticky='w', padx=(10, 0))
-check_numeros = tk.Checkbutton(checkbox_frame, text="Números", variable=numeros_var)
+check_numeros = tk.Checkbutton(checkbox_frame, text="Números", variable=numeros_var, command=comprobar_opciones)
 check_numeros.grid(row=1, column=0, sticky='w')
-check_simbolos = tk.Checkbutton(checkbox_frame, text="Símbolos", variable=simbolos_var)
+check_simbolos = tk.Checkbutton(checkbox_frame, text="Símbolos", variable=simbolos_var, command=comprobar_opciones)
 check_simbolos.grid(row=1, column=1, sticky='w', padx=(10, 0))
 
 btn = tk.Button(root, text="Generar contraseña", command=generar)
 btn.pack(padx=20, pady=(0, 20))
+
+# Establecer el estado inicial del botón según las opciones por defecto
+comprobar_opciones()
 
 if __name__ == "__main__":
     root.mainloop()
