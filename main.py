@@ -1,5 +1,5 @@
 ﻿import tkinter as tk
-from utils import generador
+from utils import generador, fuerza
 
 
 def generar():
@@ -12,9 +12,15 @@ def generar():
         incluir_simbolos=simbolos_var.get()
     )
     entry_var.set(pwd)
+    actualizar_indicador_fuerza(pwd)
     # Habilitar el botón de copiar sólo si se ha generado una contraseña
     if pwd:
         copy_btn.config(state='normal')
+
+
+def actualizar_indicador_fuerza(contrasena):
+    fuerza_texto = fuerza.evaluar_fuerza(contrasena)
+    fuerza_var.set(fuerza_texto)
 
 
 def copiar_contrasena():
@@ -45,6 +51,10 @@ root.title("Generador de contraseñas")
 entry_var = tk.StringVar()
 entry = tk.Entry(root, textvariable=entry_var, width=30, font=('Arial', 12))
 entry.pack(padx=20, pady=(20, 10))
+
+fuerza_var = tk.StringVar(value="Sin contraseña")
+fuerza_label = tk.Label(root, textvariable=fuerza_var, font=('Arial', 10))
+fuerza_label.pack(padx=20, pady=(0, 10))
 
 longitud_var = tk.IntVar(value=12)
 
