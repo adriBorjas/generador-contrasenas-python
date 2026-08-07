@@ -1,5 +1,5 @@
 ﻿import tkinter as tk
-from utils import generador, fuerza
+from utils import archivo, generador, fuerza
 
 
 def generar():
@@ -13,9 +13,10 @@ def generar():
     )
     entry_var.set(pwd)
     actualizar_indicador_fuerza(pwd)
-    # Habilitar el botón de copiar sólo si se ha generado una contraseña
+    # Habilitar los botones de copia y guardado sólo si se ha generado una contraseña
     if pwd:
         copy_btn.config(state='normal')
+        save_btn.config(state='normal')
 
 
 def actualizar_indicador_fuerza(contrasena):
@@ -28,6 +29,12 @@ def copiar_contrasena():
     if contrasena:
         root.clipboard_clear()
         root.clipboard_append(contrasena)
+
+
+def guardar_contrasena():
+    contrasena = entry_var.get()
+    if contrasena:
+        archivo.guardar_contrasena_en_archivo(contrasena)
 
 
 def validar_longitud():
@@ -96,7 +103,10 @@ btn = tk.Button(root, text="Generar contraseña", command=generar)
 btn.pack(padx=20, pady=(0, 10))
 
 copy_btn = tk.Button(root, text="Copiar contraseña", command=copiar_contrasena, state='disabled')
-copy_btn.pack(padx=20, pady=(0, 20))
+copy_btn.pack(padx=20, pady=(0, 10))
+
+save_btn = tk.Button(root, text="Guardar contraseña", command=guardar_contrasena, state='disabled')
+save_btn.pack(padx=20, pady=(0, 20))
 
 # Establecer el estado inicial del botón según las opciones por defecto
 comprobar_opciones()
