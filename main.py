@@ -1,4 +1,5 @@
 ﻿import tkinter as tk
+import tkinter.messagebox as messagebox
 from utils import archivo, generador, fuerza
 
 
@@ -29,12 +30,18 @@ def copiar_contrasena():
     if contrasena:
         root.clipboard_clear()
         root.clipboard_append(contrasena)
+        messagebox.showinfo("Copiar contraseña", "Contraseña copiada al portapapeles.")
 
 
 def guardar_contrasena():
     contrasena = entry_var.get()
     if contrasena:
-        archivo.guardar_contrasena_en_archivo(contrasena)
+        try:
+            archivo.guardar_contrasena_en_archivo(contrasena)
+        except OSError:
+            messagebox.showerror("Guardar contraseña", "No se ha podido guardar la contraseña.")
+        else:
+            messagebox.showinfo("Guardar contraseña", "Contraseña guardada correctamente.")
 
 
 def validar_longitud():
