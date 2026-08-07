@@ -12,6 +12,16 @@ def generar():
         incluir_simbolos=simbolos_var.get()
     )
     entry_var.set(pwd)
+    # Habilitar el botón de copiar sólo si se ha generado una contraseña
+    if pwd:
+        copy_btn.config(state='normal')
+
+
+def copiar_contrasena():
+    contrasena = entry_var.get()
+    if contrasena:
+        root.clipboard_clear()
+        root.clipboard_append(contrasena)
 
 
 def validar_longitud():
@@ -73,7 +83,10 @@ check_simbolos = tk.Checkbutton(checkbox_frame, text="Símbolos", variable=simbo
 check_simbolos.grid(row=1, column=1, sticky='w', padx=(10, 0))
 
 btn = tk.Button(root, text="Generar contraseña", command=generar)
-btn.pack(padx=20, pady=(0, 20))
+btn.pack(padx=20, pady=(0, 10))
+
+copy_btn = tk.Button(root, text="Copiar contraseña", command=copiar_contrasena, state='disabled')
+copy_btn.pack(padx=20, pady=(0, 20))
 
 # Establecer el estado inicial del botón según las opciones por defecto
 comprobar_opciones()
