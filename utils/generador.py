@@ -22,4 +22,7 @@ def generar_contrasena(
     if incluir_simbolos:
         chars += string.punctuation
 
+    if not chars:
+        raise ValueError("Debe seleccionarse al menos una categoría de caracteres")
+
     return ''.join(secrets.choice(chars) for _ in range(longitud))
