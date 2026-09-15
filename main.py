@@ -20,6 +20,7 @@ def generar():
         return
     entry_var.set(pwd)
     actualizar_indicador_fuerza(pwd)
+    actualizar_resumen(1)
     # Habilitar los botones de copia y guardado sólo si se ha generado una contraseña
     if pwd:
         copy_btn.config(state='normal')
@@ -46,6 +47,7 @@ def generar_varias():
     lista_contrasenas.delete(0, tk.END)
     for contrasena in contrasenas:
         lista_contrasenas.insert(tk.END, contrasena)
+    actualizar_resumen(len(contrasenas))
     copiar_varias_btn.config(state='normal')
     guardar_varias_btn.config(state='normal')
 
@@ -128,8 +130,30 @@ def validar_cantidad():
     cantidad_var.set(cantidad)
     return cantidad
 
+
+def actualizar_resumen(cantidad_generada):
+    categorias = []
+    if mayusculas_var.get():
+        categorias.append("Mayúsculas")
+    if minusculas_var.get():
+        categorias.append("Minúsculas")
+    if numeros_var.get():
+        categorias.append("Números")
+    if simbolos_var.get():
+        categorias.append("Símbolos")
+
+    resumen_var.set(
+        f"Longitud: {longitud_var.get()}\n"
+        f"Contraseñas generadas: {cantidad_generada}\n"
+        f"Categorías: {', '.join(categorias) or 'Ninguna'}\n"
+        f"Evitar ambiguos: {'Sí' if evitar_ambiguos_var.get() else 'No'}\n"
+        f"Caracteres excluidos: {excluir_caracteres_var.get() or 'Ninguno'}"
+    )
+
 root = tk.Tk()
 root.title("Generador de contraseñas")
+
+resumen_var = tk.StringVar()
 
 entry_var = tk.StringVar()
 entry = tk.Entry(root, textvariable=entry_var, width=30, font=('Arial', 12))
@@ -208,6 +232,16 @@ varias_btn.pack(padx=20, pady=(0, 10))
 lista_contrasenas = tk.Listbox(root, width=30, height=6)
 lista_contrasenas.pack(padx=20, pady=(0, 15))
 
+resumen_frame = tk.LabelFrame(root, text="Resumen")
+resumen_frame.pack(padx=20, pady=(0, 15), fill='x')
+resumen_label = tk.Label(
+    resumen_frame,
+    textvariable=resumen_var,
+    justify='left',
+    anchor='w'
+)
+resumen_label.pack(padx=10, pady=10, anchor='w')
+
 copiar_varias_btn = tk.Button(
     root,
     text="Copiar todas las contraseñas",
@@ -232,6 +266,7 @@ save_btn.pack(padx=20, pady=(0, 20))
 
 # Establecer el estado inicial del botón según las opciones por defecto
 comprobar_opciones()
+actualizar_resumen(0)
 
 if __name__ == "__main__":
     root.mainloop()
