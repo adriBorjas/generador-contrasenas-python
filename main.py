@@ -20,6 +20,22 @@ def generar():
         save_btn.config(state='normal')
 
 
+def generar_varias():
+    cantidad = validar_cantidad()
+    longitud = validar_longitud()
+    contrasenas = generador.generar_varias_contrasenas(
+        cantidad,
+        longitud,
+        incluir_mayusculas=mayusculas_var.get(),
+        incluir_minusculas=minusculas_var.get(),
+        incluir_numeros=numeros_var.get(),
+        incluir_simbolos=simbolos_var.get()
+    )
+    lista_contrasenas.delete(0, tk.END)
+    for contrasena in contrasenas:
+        lista_contrasenas.insert(tk.END, contrasena)
+
+
 def actualizar_indicador_fuerza(contrasena):
     fuerza_texto = fuerza.evaluar_fuerza(contrasena)
     fuerza_var.set(fuerza_texto)
@@ -59,6 +75,22 @@ def validar_longitud():
     longitud_var.set(longitud)
     return longitud
 
+
+def validar_cantidad():
+    valor = spinbox_cantidad.get()
+    try:
+        cantidad = int(valor)
+    except (ValueError, TypeError):
+        cantidad = 5
+
+    if cantidad < 5:
+        cantidad = 5
+    elif cantidad > 10:
+        cantidad = 10
+
+    cantidad_var.set(cantidad)
+    return cantidad
+
 root = tk.Tk()
 root.title("Generador de contraseñas")
 
@@ -77,6 +109,13 @@ longitud_label.pack(padx=20, pady=(0, 5))
 spinbox_longitud = tk.Spinbox(root, from_=8, to=64, textvariable=longitud_var, width=5)
 spinbox_longitud.pack(padx=20, pady=(0, 15))
 
+cantidad_var = tk.IntVar(value=5)
+
+cantidad_label = tk.Label(root, text="Cantidad de contraseñas:")
+cantidad_label.pack(padx=20, pady=(0, 5))
+spinbox_cantidad = tk.Spinbox(root, from_=5, to=10, textvariable=cantidad_var, width=5)
+spinbox_cantidad.pack(padx=20, pady=(0, 15))
+
 mayusculas_var = tk.BooleanVar(value=True)
 minusculas_var = tk.BooleanVar(value=True)
 numeros_var = tk.BooleanVar(value=True)
@@ -91,8 +130,10 @@ def comprobar_opciones():
         simbolos_var.get()
     ]):
         btn.config(state='normal')
+        varias_btn.config(state='normal')
     else:
         btn.config(state='disabled')
+        varias_btn.config(state='disabled')
 
 def crear_checkbutton(frame, text, variable, row, column, padx=(0, 0)):
     check = tk.Checkbutton(frame, text=text, variable=variable, command=comprobar_opciones)
@@ -109,6 +150,12 @@ check_simbolos = crear_checkbutton(checkbox_frame, "Símbolos", simbolos_var, 1,
 
 btn = tk.Button(root, text="Generar contraseña", command=generar)
 btn.pack(padx=20, pady=(0, 10))
+
+varias_btn = tk.Button(root, text="Generar varias contraseñas", command=generar_varias)
+varias_btn.pack(padx=20, pady=(0, 10))
+
+lista_contrasenas = tk.Listbox(root, width=30, height=6)
+lista_contrasenas.pack(padx=20, pady=(0, 15))
 
 copy_btn = tk.Button(root, text="Copiar contraseña", command=copiar_contrasena, state='disabled')
 copy_btn.pack(padx=20, pady=(0, 10))
