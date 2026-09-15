@@ -18,3 +18,12 @@ def guardar_contrasena_en_archivo(contrasena, ruta=None):
 
     with ruta.open("a", encoding="utf-8") as archivo:
         archivo.write(contenido)
+
+
+def guardar_varias_contrasenas(contrasenas, ruta=None):
+    """Guarda varias contraseñas usando el formato del guardado individual."""
+    if not contrasenas:
+        return
+
+    for contrasena in contrasenas:
+        guardar_contrasena_en_archivo(contrasena, ruta)

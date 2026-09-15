@@ -46,6 +46,8 @@ def generar_varias():
     lista_contrasenas.delete(0, tk.END)
     for contrasena in contrasenas:
         lista_contrasenas.insert(tk.END, contrasena)
+    copiar_varias_btn.config(state='normal')
+    guardar_varias_btn.config(state='normal')
 
 
 def actualizar_indicador_fuerza(contrasena):
@@ -70,6 +72,29 @@ def guardar_contrasena():
             messagebox.showerror("Guardar contraseña", "No se ha podido guardar la contraseña.")
         else:
             messagebox.showinfo("Guardar contraseña", "Contraseña guardada correctamente.")
+
+
+def obtener_contrasenas_mostradas():
+    return list(lista_contrasenas.get(0, tk.END))
+
+
+def copiar_varias_contrasenas():
+    contrasenas = obtener_contrasenas_mostradas()
+    if contrasenas:
+        root.clipboard_clear()
+        root.clipboard_append("\n".join(contrasenas))
+        messagebox.showinfo("Copiar contraseñas", "Contraseñas copiadas al portapapeles.")
+
+
+def guardar_varias_contrasenas():
+    contrasenas = obtener_contrasenas_mostradas()
+    if contrasenas:
+        try:
+            archivo.guardar_varias_contrasenas(contrasenas)
+        except OSError:
+            messagebox.showerror("Guardar contraseñas", "No se han podido guardar las contraseñas.")
+        else:
+            messagebox.showinfo("Guardar contraseñas", "Contraseñas guardadas correctamente.")
 
 
 def validar_longitud():
@@ -182,6 +207,22 @@ varias_btn.pack(padx=20, pady=(0, 10))
 
 lista_contrasenas = tk.Listbox(root, width=30, height=6)
 lista_contrasenas.pack(padx=20, pady=(0, 15))
+
+copiar_varias_btn = tk.Button(
+    root,
+    text="Copiar todas las contraseñas",
+    command=copiar_varias_contrasenas,
+    state='disabled'
+)
+copiar_varias_btn.pack(padx=20, pady=(0, 10))
+
+guardar_varias_btn = tk.Button(
+    root,
+    text="Guardar todas las contraseñas",
+    command=guardar_varias_contrasenas,
+    state='disabled'
+)
+guardar_varias_btn.pack(padx=20, pady=(0, 10))
 
 copy_btn = tk.Button(root, text="Copiar contraseña", command=copiar_contrasena, state='disabled')
 copy_btn.pack(padx=20, pady=(0, 10))
