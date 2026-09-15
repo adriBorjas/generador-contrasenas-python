@@ -5,13 +5,19 @@ from utils import archivo, generador, fuerza
 
 def generar():
     longitud = validar_longitud()
-    pwd = generador.generar_contrasena(
-        longitud,
-        incluir_mayusculas=mayusculas_var.get(),
-        incluir_minusculas=minusculas_var.get(),
-        incluir_numeros=numeros_var.get(),
-        incluir_simbolos=simbolos_var.get()
-    )
+    try:
+        pwd = generador.generar_contrasena(
+            longitud,
+            incluir_mayusculas=mayusculas_var.get(),
+            incluir_minusculas=minusculas_var.get(),
+            incluir_numeros=numeros_var.get(),
+            incluir_simbolos=simbolos_var.get(),
+            evitar_ambiguos=evitar_ambiguos_var.get(),
+            excluir_caracteres=excluir_caracteres_var.get()
+        )
+    except ValueError as error:
+        messagebox.showerror("Generar contraseña", str(error))
+        return
     entry_var.set(pwd)
     actualizar_indicador_fuerza(pwd)
     # Habilitar los botones de copia y guardado sólo si se ha generado una contraseña
@@ -23,14 +29,20 @@ def generar():
 def generar_varias():
     cantidad = validar_cantidad()
     longitud = validar_longitud()
-    contrasenas = generador.generar_varias_contrasenas(
-        cantidad,
-        longitud,
-        incluir_mayusculas=mayusculas_var.get(),
-        incluir_minusculas=minusculas_var.get(),
-        incluir_numeros=numeros_var.get(),
-        incluir_simbolos=simbolos_var.get()
-    )
+    try:
+        contrasenas = generador.generar_varias_contrasenas(
+            cantidad,
+            longitud,
+            incluir_mayusculas=mayusculas_var.get(),
+            incluir_minusculas=minusculas_var.get(),
+            incluir_numeros=numeros_var.get(),
+            incluir_simbolos=simbolos_var.get(),
+            evitar_ambiguos=evitar_ambiguos_var.get(),
+            excluir_caracteres=excluir_caracteres_var.get()
+        )
+    except ValueError as error:
+        messagebox.showerror("Generar varias contraseñas", str(error))
+        return
     lista_contrasenas.delete(0, tk.END)
     for contrasena in contrasenas:
         lista_contrasenas.insert(tk.END, contrasena)
@@ -115,6 +127,20 @@ cantidad_label = tk.Label(root, text="Cantidad de contraseñas:")
 cantidad_label.pack(padx=20, pady=(0, 5))
 spinbox_cantidad = tk.Spinbox(root, from_=5, to=10, textvariable=cantidad_var, width=5)
 spinbox_cantidad.pack(padx=20, pady=(0, 15))
+
+evitar_ambiguos_var = tk.BooleanVar(value=False)
+evitar_ambiguos_check = tk.Checkbutton(
+    root,
+    text="Evitar caracteres ambiguos (0, O)",
+    variable=evitar_ambiguos_var
+)
+evitar_ambiguos_check.pack(padx=20, pady=(0, 5), anchor='w')
+
+excluir_caracteres_var = tk.StringVar()
+excluir_caracteres_label = tk.Label(root, text="Caracteres a excluir:")
+excluir_caracteres_label.pack(padx=20, pady=(0, 5), anchor='w')
+excluir_caracteres_entry = tk.Entry(root, textvariable=excluir_caracteres_var, width=30)
+excluir_caracteres_entry.pack(padx=20, pady=(0, 15))
 
 mayusculas_var = tk.BooleanVar(value=True)
 minusculas_var = tk.BooleanVar(value=True)
