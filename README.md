@@ -1,4 +1,4 @@
-# Generador de contraseñas
+# Generador de contraseñas con Python
 
 Aplicación de escritorio desarrollada en Python como proyecto formativo del módulo 6 (M6T3) del curso de Python de Tokio School.
 
@@ -44,10 +44,9 @@ En algunos sistemas puede ser necesario utilizar `python3 main.py`.
 ## Estructura del proyecto
 
 ```text
-proyecto_passwords/
+generador-contrasenas-python/
 ├── main.py
 ├── requirements.txt
-├── contraseñas_guardadas.txt
 └── utils/
     ├── __init__.py
     ├── archivo.py
@@ -59,7 +58,7 @@ proyecto_passwords/
 - `utils/generador.py`: contiene la lógica de generación de contraseñas.
 - `utils/fuerza.py`: realiza la clasificación orientativa de fuerza.
 - `utils/archivo.py`: gestiona el guardado de contraseñas en un archivo de texto.
-- `contraseñas_guardadas.txt`: archivo local donde se almacenan las contraseñas guardadas desde la aplicación.
+- `contraseñas_guardadas.txt`: se crea localmente cuando se guardan contraseñas desde la aplicación. Está excluido del repositorio mediante `.gitignore` y no se sube a GitHub.
 
 ## Consideraciones de seguridad
 
