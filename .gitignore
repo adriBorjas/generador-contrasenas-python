@@ -17,3 +17,6 @@ capturas/
 
 # Documentación de seguimiento (no forma parte del proyecto)
 documentacion/progreso_proyecto.md
+
+# Datos locales: contraseñas guardadas por la aplicación
+contraseñas_guardadas.txt
